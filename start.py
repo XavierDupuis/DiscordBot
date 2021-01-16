@@ -9,11 +9,6 @@ prefix = '-'
 description = '''Custom Kirbo Bot'''
 bot = commands.Bot(command_prefix=prefix, description=description)
 
-#@bot.command()
-#async def setprefix(self, ctx, *, prefixes=""):
-#    custom_prefixes[ctx.guild.id] = prefixes.split() or default_prefixes
-#    await ctx.send("Prefixes set!")
-
 @bot.event
 async def on_ready():
     print('------------------------------------')
@@ -25,23 +20,30 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.idle, activity=discord.Game(name=nameActivity))
 
 @bot.command()
-async def add(ctx, left: int, right: int):
-    """Adds two numbers together."""
-    await ctx.send(left + right)
+async def setprefix(ctx, prefix):
+    bot.command_prefix = prefix
+    await ctx.send("Prefix set to \"" + prefix + "\"")
 
 @bot.command()
 async def quote(ctx):
     """Fetch a random quote"""
-    q = get_quote()
-    await ctx.send(q)
+    await ctx.send(get_quote())
 
 @bot.command()
 async def apod(ctx):
     """Fetch the NASA Astronomical Picture Of the Day"""
+    await ctx.send("https://apod.nasa.gov/apod/astropix.html")
     await ctx.send(file=discord.File(get_picture()))
     with open(get_explanation(),'r') as file:
         await ctx.send(file.readline()) 
 
+
+################################################################
+@bot.command()
+async def add(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
+    
 @bot.command()
 async def roll(ctx, dice: str):
     """Rolls a dice in NdN format."""
@@ -88,7 +90,7 @@ async def cool(ctx):
 async def _bot(ctx):
     """Is the bot cool?"""
     await ctx.send('Yes, the bot is cool.')
-
+#####################################################################
 
 file = open("token.txt", "r")
 token = file.read()
