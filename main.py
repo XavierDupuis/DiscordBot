@@ -4,7 +4,7 @@ import random
 
 from quote import *
 from apod import *
-from meteo import *
+from weather import *
 
 prefix = '-'
 description = '''Custom Kirbo Bot'''
@@ -18,9 +18,11 @@ bot = commands.Bot(command_prefix=prefix, description=description)
 @bot.event
 async def on_ready():
     print('------------------------------------')
-    print('Logged in as')
-    print('Bot Name : ', bot.user.name)
-    print('Bot ID   : ', bot.user.id)
+    print('     ===      BOT READY     ===     ')
+    print('Name     : ', bot.user.name)
+    print('#        : ', bot.user.discriminator)
+    print('ID       : ', bot.user.id)
+    print('Prefix   : ', bot.command_prefix)
     print('------------------------------------')
     nameActivity = prefix + "help for more info"
     await bot.change_presence(status=discord.Status.online, activity=discord.Game(name=nameActivity))
@@ -45,6 +47,10 @@ async def apod(ctx):
     with open(get_explanation(),'r') as file:
         await ctx.send(file.readline()) 
 
+@bot.command()
+async def weather(ctx, city, country="ca"):
+    """Fetch the Weather for a corresponding location"""
+    await ctx.send(format_weather(city, country))
 
 ################################################################
 #@bot.command()
@@ -100,7 +106,7 @@ async def apod(ctx):
 #    await ctx.send('Yes, the bot is cool.')
 #####################################################################
 
-file = open("token.txt", "r")
+file = open("keys/DiscordToken.txt", "r")
 token = file.read()
 file.close()
 bot.run(token)

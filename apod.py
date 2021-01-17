@@ -3,13 +3,18 @@ import json
 import os
 import datetime
 
-def get_data(api_key="DEMO_KEY"):
+def get_data():
+    with open('keys/APODkey.txt') as api_key:
+        api_key = api_key.read()
     raw_response = requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text
     response = json.loads(raw_response)
-    return response
+    dir_check("json")
+    with open('json/APOD.json','w') as file:
+       json.dump(response, file)
 
 def get_picture_url():
-    return get_data()['url']
+    with open('json/APOD.json','r') as file:
+        return json.load(file)['url']
 
 def dir_check(dir_name):
     if not os.path.exists(dir_name):

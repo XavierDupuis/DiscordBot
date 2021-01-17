@@ -1,4 +1,5 @@
-token.txt
+/keys
 /__pycache__
 /.vscode
 /apod
+*.json
