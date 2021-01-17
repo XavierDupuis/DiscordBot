@@ -21,7 +21,16 @@ def format_weather(city, country="ca"):
     get_data(city, country)
     with open(f'json/OpenWeather-{city}-{country}.json','r') as file:
         response = json.load(file)
+
     out = city.upper() + " (" + country.upper() + ")" + "\n"
+
+    try:
+        out += "    Error : " + response['message']
+        os.remove(f'json/OpenWeather-{city}-{country}.json') 
+        return out
+    except:
+        pass
+    
     out += "    Location       : " + str(response['coord']['lon']) + "°N " + str(response['coord']['lat']) + "°W" + "\n"
     out += "    Condition      : " + response['weather'][0]['main'] + "\n"
     out += "    Temperature    : " + format(response['main']['temp'] + ABSOLUTE_ZERO,'.2f') + "°C" + "\n"
