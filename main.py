@@ -6,6 +6,7 @@ from quote import *
 from apod import *
 from weather import *
 from translate import *
+from thispersondoesntexist import *
 
 prefix = '-'
 description = '''Custom Kirbo Bot'''
@@ -66,6 +67,11 @@ async def weather(ctx, city, country="ca"):
 async def translate(ctx, message, target="en"):
     """Translate from a language to another. Target is set to English by default"""
     await ctx.send(" Translation to " + target + " : " + get_translate(message, target))
+
+@bot.command()
+async def tpdne(ctx):
+    """Fetch a thispersondoesnotexist.com image"""
+    await ctx.send(file=discord.File(get_tpdne_picture()))
 
 ################################################################
 #@bot.command()
