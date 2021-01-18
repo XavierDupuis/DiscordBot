@@ -6,6 +6,7 @@ from quote import *
 from apod import *
 from weather import *
 from translate import *
+from ocr import *
 from thispersondoesntexist import *
 
 prefix = '-'
@@ -72,6 +73,11 @@ async def translate(ctx, message, target="en"):
 async def tpdne(ctx):
     """Fetch a thispersondoesnotexist.com image"""
     await ctx.send(file=discord.File(get_tpdne_picture()))
+
+@bot.command()
+async def ocr(ctx, image_url):
+    """Performs OCR on image"""
+    await ctx.send(get_ocr_text(image_url))
 
 ################################################################
 #@bot.command()
