@@ -38,21 +38,11 @@ def get_ocr_text(image_url):
         return "Invalide image URL"
     if data['language'] == "unk":
         return "No text found in image"
-    lines = data['regions'][0]['lines']
-    line_index = 0
-    word_index = 0
-    while(True):
-        try:
-            line = lines[line_index]
-            while(True):
-                try:
-                    out += line['words'][word_index]['text'] + " "
-                    word_index += 1
-                except:
-                    word_index = 0
-                    break
-            line_index += 1
-        except:
-            line_index = 0
-            break
+
+    for region in data['regions']:
+        out += "\n"
+        for line in region['lines']:
+            for word in line['words']:
+                out += word['text'] + " "
+
     return out
