@@ -16,6 +16,10 @@ def get_picture_url():
     with open('json/APOD.json','r') as file:
         return json.load(file)['url']
 
+def get_picture_explanation():
+    with open('json/APOD.json','r') as file:
+        return json.load(file)['explanation']
+
 def dir_check(dir_name):
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
@@ -25,9 +29,9 @@ def download_image_and_explanation():
     dir_check('apod')
     if os.path.isfile(f'apod/{today}.png') == False:
         data = get_data()
-        url = data['url']
+        url = get_picture_url()
         raw_image = requests.get(url).content
-        explanation = data['explanation']
+        explanation = get_picture_explanation()
         with open(f'apod/{today}.png', 'wb') as file:
             file.write(raw_image)
         with open(f'apod/{today}.txt', 'w') as file:
