@@ -5,6 +5,7 @@ import random
 from quote import *
 from apod import *
 from weather import *
+from translate import *
 
 prefix = '-'
 description = '''Custom Kirbo Bot'''
@@ -60,6 +61,11 @@ async def apod(ctx):
 async def weather(ctx, city, country="ca"):
     """Fetch the Weather for a corresponding location"""
     await ctx.send(format_weather(city, country))
+
+@bot.command()
+async def translate(ctx, message, target="en"):
+    """Translate from a language to another. Target is set to English by default"""
+    await ctx.send(" Translation to " + target + " : " + get_translate(message, target))
 
 ################################################################
 #@bot.command()
