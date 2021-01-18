@@ -7,15 +7,14 @@ def get_data(message, target="en"):
     payload = f"q={formatted_message}&target={target}"
     with open('keys/RapidAPIKey.txt') as api_key:
         api_key = api_key.read()
-        headers = {
-            'content-type': "application/x-www-form-urlencoded",
-            'accept-encoding': "application/gzip",
-            'x-rapidapi-key': api_key,
-            'x-rapidapi-host': "google-translate1.p.rapidapi.com"
-            }
+    headers = {
+        'content-type': "application/x-www-form-urlencoded",
+        'accept-encoding': "application/gzip",
+        'x-rapidapi-key': api_key,
+        'x-rapidapi-host': "google-translate1.p.rapidapi.com"
+        }
     raw_response = requests.request("POST", url, data=payload, headers=headers)
     response = json.loads(raw_response.text)
-    print(response)
     try:
         out = response['data']['translations'][0]['translatedText']
     except:
