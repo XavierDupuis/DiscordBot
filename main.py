@@ -43,7 +43,7 @@ async def setprefix(ctx, prefix):
 @bot.event
 async def on_command_error(ctx, error):
     await ctx.send("ERROR : " + str(error))
-    if "Command" in str(error):
+    if "Command" in str(error) and "is not found" in str(error):
         await ctx.send("Enter \" " + str(bot.command_prefix) + "help\" for available commands")
 
 @bot.command()
@@ -61,22 +61,22 @@ async def apod(ctx):
 
 @bot.command()
 async def weather(ctx, city, country="ca"):
-    """Fetch the Weather for a corresponding location"""
+    """Fetch the Weather for a corresponding location."""
     await ctx.send(format_weather(city, country))
 
 @bot.command()
 async def translate(ctx, message, target="en"):
-    """Translate from a language to another. Target is set to English by default"""
+    """Translate from a language to another."""
     await ctx.send(" Translation to " + target + " : " + get_translate(message, target))
 
 @bot.command()
 async def tpdne(ctx):
-    """Fetch a thispersondoesnotexist.com image"""
+    """Fetch a thispersondoesnotexist.com image."""
     await ctx.send(file=discord.File(get_tpdne_picture()))
 
 @bot.command()
 async def ocr(ctx, image_url):
-    """Performs OCR on image"""
+    """Performs OCR on image."""
     await ctx.send(get_ocr_text(image_url))
 
 ################################################################
@@ -133,7 +133,10 @@ async def ocr(ctx, image_url):
 #    await ctx.send('Yes, the bot is cool.')
 #####################################################################
 
-file = open("keys/DiscordToken.txt", "r")
-token = file.read()
-file.close()
-bot.run(token)
+try:
+    with open("keys/DiscordToken.txt", "r") as file:
+        token = file.read()
+    bot.run(token)
+except FileNotFoundError:
+    print("Discord Bot token couldn't be found in \"keys/DiscordToken.txt\"")
+
