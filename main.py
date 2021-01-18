@@ -27,12 +27,21 @@ async def on_ready():
     nameActivity = prefix + "help for more info"
     await bot.change_presence(status=discord.Status.online, activity=discord.Game(name=nameActivity))
 
+@bot.event
+async def on_message_delete(message):
+    print(" DELETED  : ", message)
 
 @bot.command()
 async def setprefix(ctx, prefix):
     """Changes the bot prefix"""
     bot.command_prefix = prefix
     await ctx.send("Prefix set to \"" + prefix + "\"")
+
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send("ERROR : " + str(error))
+    if "Command" in str(error):
+        await ctx.send("Enter \" " + str(bot.command_prefix) + "help\" for available commands")
 
 @bot.command()
 async def quote(ctx):
