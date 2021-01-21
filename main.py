@@ -8,6 +8,7 @@ from weather import *
 from translate import *
 from ocr import *
 from thispersondoesntexist import *
+from wikipedia import *
 
 prefix = '-'
 description = '''Custom Kirbo Bot'''
@@ -54,15 +55,34 @@ async def quote(ctx):
 @bot.command()
 async def apod(ctx):
     """Fetch the NASA Astronomical Picture Of the Day"""
-    await ctx.send("https://apod.nasa.gov/apod/astropix.html")
-    await ctx.send(file=discord.File(get_picture()))
     with open(get_explanation(),'r') as file:
-        await ctx.send(file.readline()) 
+        explanation = file.readline()
+    embed = discord.Embed(
+        title = "Astronomical Picture Of the Day",
+        description = explanation,
+        color = discord.Color.blue()
+    )
+    embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/918px-NASA_logo.svg.png")
+    embed.set_image(url=get_picture_hdurl())
+    embed.set_footer(text="https://apod.nasa.gov/apod/astropix.html")
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def weather(ctx, city, country="ca"):
     """Fetch the Weather for a corresponding location."""
-    await ctx.send(format_weather(city, country))
+    out = format_weather(city, country).split("\n")
+    embed = discord.Embed(
+        title = out[0] + "\t" + f":flag_{country}:",
+        color = discord.Color.blue()
+    )
+    if out[1] == "    Error : city not found":
+        embed.add_field(name="Error",value="City not found")
+        await ctx.send(embed=embed)
+    else:
+        for i in range(len(out)-3):
+            pair = out[i+2].split(":")
+            embed.add_field(name=pair[0], value=pair[1], inline=False)
+        await ctx.send(embed=embed)
 
 @bot.command()
 async def translate(ctx, message, target="en"):
@@ -78,6 +98,18 @@ async def tpdne(ctx):
 async def ocr(ctx, image_url):
     """Performs OCR on image."""
     await ctx.send(get_ocr_text(image_url))
+
+@bot.command()
+async def wikipedia(ctx, search, numberResults=3):
+    """Returns wikipedia top results for a string"""
+    out = get_results(search, numberResults).split("\n")
+    embed = discord.Embed(
+        title = out[0] + "\t" + f":mag_right:",
+        color = discord.Color.blue()
+    )
+    for i in range(numberResults):
+        embed.add_field(name=out[i*3+2], value=out[i*3+3], inline=False)
+    await ctx.send(embed=embed)
 
 ################################################################
 #@bot.command()
