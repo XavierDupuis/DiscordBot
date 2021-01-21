@@ -12,6 +12,10 @@ def get_data():
     with open('json/APOD.json','w') as file:
        json.dump(response, file)
 
+def get_picture_hdurl():
+    with open('json/APOD.json','r') as file:
+        return json.load(file)['hdurl']
+
 def get_picture_url():
     with open('json/APOD.json','r') as file:
         return json.load(file)['url']
