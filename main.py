@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import random
+import time
+import audioread
 
 from quote import *
 from apod import *
@@ -10,7 +12,7 @@ from ocr import *
 from thispersondoesntexist import *
 from wikipedia import *
 
-prefix = '-'
+prefix = '!'
 description = '''Custom Kirbo Bot'''
 bot = commands.Bot(command_prefix=prefix, description=description)
 #bot.remove_command("help")
@@ -110,6 +112,23 @@ async def wikipedia(ctx, search, numberResults=3):
     for i in range(numberResults):
         embed.add_field(name=out[i*3+2], value=out[i*3+3], inline=False)
     await ctx.send(embed=embed)
+
+@bot.event
+async def on_voice_state_update(member: discord.Member, before, after):
+    if member.guild.id == 691785070020919347:   # Custom guild id (remove for all guilds)
+        if member == bot.user:
+            return
+        if before.channel == after.channel:
+            return
+        if after.channel is None:
+            return
+        vc = await member.voice.channel.connect()
+        audio_source = "audio\welcome.mp3"
+        audio = discord.FFmpegPCMAudio(executable="ffmpeg/ffmpeg.exe", source=audio_source)
+        time.sleep(0.5)
+        vc.play(audio)
+        time.sleep(2)
+        await vc.disconnect()
 
 ################################################################
 #@bot.command()
