@@ -115,7 +115,7 @@ async def wikipedia(ctx, search, numberResults=3):
 
 @bot.event
 async def on_voice_state_update(member: discord.Member, before, after):
-    if member.guild.id == 691785070020919347:   # Custom guild id (remove for all guilds)
+    if str(after.channel).lower() == "bottom gear":
         if member == bot.user:
             return
         if before.channel == after.channel:
