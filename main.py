@@ -186,7 +186,7 @@ async def on_voice_state_update(member: discord.Member, before, after):
 
 try:
     with open("keys/DiscordToken.txt", "r") as file:
-        token = file.read()
+        token = file.read().rstrip()
     bot.run(token)
 except FileNotFoundError:
     print("Discord Bot token couldn't be found in \"keys/DiscordToken.txt\"")

@@ -5,7 +5,7 @@ import datetime
 
 def get_data():
     with open('keys/APODkey.txt') as api_key:
-        api_key = api_key.read()
+        api_key = api_key.read().rstrip()
     raw_response = requests.get(f'https://api.nasa.gov/planetary/apod?api_key={api_key}').text
     response = json.loads(raw_response)
     dir_check("json")

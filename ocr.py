@@ -4,7 +4,7 @@ import os
 
 def get_data(image_url):
     with open('keys/RapidAPIKey.txt') as api_key:
-        api_key = api_key.read()
+        api_key = api_key.read().rstrip()
     url = "https://microsoft-computer-vision3.p.rapidapi.com/ocr"
     querystring = {"detectOrientation":"true","language":"unk"}
     payload = "{\r \"url\": \"" + image_url + "\" \r }"

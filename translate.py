@@ -6,7 +6,7 @@ def get_data(message, target="en"):
     formatted_message = message.replace(' ','%20')
     payload = f"q={formatted_message}&target={target}"
     with open('keys/RapidAPIKey.txt') as api_key:
-        api_key = api_key.read()
+        api_key = api_key.read().rstrip()
     headers = {
         'content-type': "application/x-www-form-urlencoded",
         'accept-encoding': "application/gzip",

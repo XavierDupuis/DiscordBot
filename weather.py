@@ -6,7 +6,7 @@ ABSOLUTE_ZERO = -273.15
 
 def get_data(city, country="ca"):
     with open('keys/OpenWeatherKey.txt','r') as api_key:
-        api_key = api_key.read()
+        api_key = api_key.read().rstrip()
     raw_response = requests.get(f'http://api.openweathermap.org/data/2.5/weather?q={city},{country}&APPID={api_key}').text
     response = json.loads(raw_response)
     dir_check("json")
